@@ -391,6 +391,12 @@ impl CanvasState {
                 // https://html.spec.whatwg.org/multipage/#img-error
                 // If the image argument is an HTMLImageElement object that is in the broken state,
                 // then throw an InvalidStateError exception
+
+                let usable = image.is_usable()?;
+                if !usable {
+                    return Ok(());
+                }
+
                 let url = image.get_url().ok_or(Error::InvalidState)?;
                 let cors_setting = cors_setting_for_element(image.upcast());
                 self.fetch_and_draw_image_data(
